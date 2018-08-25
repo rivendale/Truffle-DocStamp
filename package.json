@@ -46,13 +46,16 @@
     "webpack": "1.14.0",
     "webpack-dev-server": "1.16.2",
     "webpack-manifest-plugin": "1.1.0",
+    "mongodb": "0.9.9",
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
     "dotenv": "^2.0.0",
     "ipfs-api": "^22.0.1",
+    "material-ui": "^0.20.2",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "react-tap-event-plugin": "^3.0.3"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -98,5 +101,21 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  }
+  },
+  "description": "",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rivendale/Truffle-DocStamp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rivendale/Truffle-DocStamp/issues"
+  },
+  "homepage": "https://github.com/rivendale/Truffle-DocStamp#readme"
 }
