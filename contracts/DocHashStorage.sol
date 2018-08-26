@@ -3,7 +3,6 @@ pragma solidity 0.4.24;
 import './zeppelin/lifecycle/Killable.sol';
 
 contract DocHashStorage is Killable {
-  string ipfsHash;
 
   struct DocInfo {
     string ipfsHash;
@@ -22,7 +21,7 @@ contract DocHashStorage is Killable {
 
   modifier onlyMaxDocs {
   // check to see if user has reached maximum documents stored
-  require(users[msg.sender].numdocs < 10);
+  require(users[msg.sender].numdocs < 5);
   _;
   }
 
@@ -39,21 +38,14 @@ contract DocHashStorage is Killable {
     _;
   }
 
-  function set(string x) public {
-    ipfsHash = x;
-  }
-
-  function get() public view returns (string) {
-    return ipfsHash;
-  }
-
   function adddocs(string _ipfsHash, string _HashTag) {
     uint currdoc = users[msg.sender].numdocs;
     users[msg.sender].docs[currdoc].ipfsHash = _ipfsHash;
     users[msg.sender].docs[currdoc].HashTag = _HashTag;
-    if(users[msg.sender].numdocs > 9) {
+    users[msg.sender].numdocs += 1;
+    if(users[msg.sender].numdocs > 4) {
       users[msg.sender].numdocs = 0;
-    } else { users[msg.sender].numdocs += 1; }
+    }
 
   }
 

@@ -18,9 +18,7 @@ class App extends Component {
       buffer: null,
       account: null,
       ethAddress: null,
-      docnum : null,
       username: null,
-      transactlist : null,
       taginfo: null
     }
     this.captureFile = this.captureFile.bind(this);
@@ -52,13 +50,8 @@ class App extends Component {
     this.state.web3.eth.getAccounts((error, accounts) => {
       DocHashStorage.deployed().then((instance) => {
         this.DocHashStorageInstance = instance
-        this.setState({ account: accounts[0] })
-
-        // Get the value from the contract to prove it worked.
-//      return this.DocHashStorageInstance.get.call(accounts[0])
-//      }).then((ipfsHash) => {
-        // Update state with the result.
-    //    return this.setState({ ipfsHash })
+        this.setState({account: accounts[0] })
+        this.setState({ethAddress: this.DocHashStorageInstance.address})
       })
     })
   }
@@ -79,38 +72,26 @@ class App extends Component {
   }
 
   onSubmitName(event) {
-
-
+    this.setState({ username: event.target.value })
   }
-
 
   onSubmit(event) {
     var newIPFShash
-
     event.preventDefault()
     this.setState({ethAddress: "Please Wait.."});
-
     ipfs.files.add(this.state.buffer, (error, result) => {
         if(error) {
           console.error(error)
           return
         }
-
     newIPFShash = result[0].hash;
-
     this.setState({ethAddress: this.DocHashStorageInstance.address });
-
+    this.setState({taginfo: this.state.taginfo })
     this.DocHashStorageInstance.adddocs(newIPFShash, this.state.taginfo, {from: this.state.account, gas: 1000000} ).then((r) => {
     return this.setState({ipfsHash: newIPFShash})
       })
     })
   }
-
-  activateTransactions() {
-    event.preventDefault()
-    this.setState({docnum: this.DocHashStorageInstance.getnumdocs()});
-    this.setState({ethAddress: this.DocHashStorageInstance.address});
-   };
 
   render() {
     return (
@@ -124,7 +105,7 @@ class App extends Component {
             <div className="pure-u-1-1">
               <h2>User Profile</h2>
               <p>User Ethereum Address: {this.state.account}</p>
-              <p>User ID: {this.state.userinfo} </p>
+              <p>{this.state.userinfo} </p>
               <form onSubmit={this.onSubmitName} >
                 <input id="nameinfo" type="text" value={this.state.username} placeholder="enter new username" />
                 <input type='submit' />
@@ -138,26 +119,17 @@ class App extends Component {
               </form>
               <h2>Latest Transaction Info</h2>
               <p>IPFS Hash #: {this.state.ipfsHash}</p>
+              <p>Tag: {this.state.taginfo}</p>
               <p>Ethereum Contract Address: {this.state.ethAddress}</p>
+
               <p><img src={`https://ipfs.io/ipfs/${this.state.ipfsHash}`} alt=""/></p>
               <hr/>
               <br/>
-
-              <button onClick={ this.activateTransactions.bind(this) }> Load Transactions </button>
-              <p>Number of documents: {this.state.docnum}</p>
-              <p>Data</p>
-              {this.state.transactlist}
-
-
             </div>
           </div>
-
-
-
         </main>
       </div>
     );
   }
 }
-
 export default App
